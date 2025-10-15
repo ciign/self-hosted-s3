@@ -15,10 +15,9 @@ services:
       MINIO_REGION_NAME: ${MINIO_REGION:-us-east-1}
       MINIO_BROWSER: ${MINIO_BROWSER:-on}
       MINIO_DOMAIN: ${MINIO_DOMAIN:-localhost}
-      # Optional: Enable console
       MINIO_BROWSER_REDIRECT_URL: ${MINIO_BROWSER_REDIRECT_URL:-http://localhost:9001}
     volumes:
-      - ./minio/data:/data  # Local directory for MinIO data
+      - ./minio/data:/data
       - ./minio/init:/docker-entrypoint-initdb.d:ro
     command: server /data --console-address ":9001"
     networks:
@@ -46,7 +45,7 @@ services:
       echo 'Waiting for MinIO server...';
       sleep 5;
       echo 'Configuring MinIO client with credentials from .env.minio...';
-      mc alias set local http://minio-server:9000 \"\$MINIO_ROOT_USER\" \"\$MINIO_ROOT_PASSWORD\";
+      mc alias set local http://minio-server:9000 \"$$MINIO_ROOT_USER\" \"$$MINIO_ROOT_PASSWORD\";
       echo 'MinIO client configured successfully';
       
       echo 'Creating default buckets...';
