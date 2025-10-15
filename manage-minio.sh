@@ -103,7 +103,7 @@ cmd_restart() {
 cmd_status() {
     print_header "MinIO Cluster Status"
 
-    docker compose -f "$COMPOSE_FILE" ps
+    docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" ps
 
     echo ""
     print_info "Checking MinIO server health..."
@@ -129,13 +129,13 @@ cmd_logs() {
 
     case $service in
         all)
-            docker compose -f "$COMPOSE_FILE" logs -f
+            docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" logs -f
             ;;
         server)
-            docker compose -f "$COMPOSE_FILE" logs -f minio-server
+            docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" logs -f minio-server
             ;;
         client)
-            docker compose -f "$COMPOSE_FILE" logs -f minio-client
+            docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" logs -f minio-client
             ;;
         *)
             print_error "Unknown service: $service"
@@ -404,7 +404,7 @@ cmd_clean() {
     fi
 
     print_info "Stopping services..."
-    docker compose -f "$COMPOSE_FILE" down
+    docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" down
 
     print_info "Removing data directory..."
     rm -rf minio/data/*
