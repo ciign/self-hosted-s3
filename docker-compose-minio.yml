@@ -1,21 +1,21 @@
 services:
   # MinIO S3-compatible Object Storage Server
-  # The console UI is built into this image - accessible on port 9001
   minio-server:
     image: quay.io/minio/minio:latest
     container_name: minio_server
     hostname: minio-server
     restart: unless-stopped
     ports:
-      - "9000:9000"  # S3 API endpoint
-      - "9001:9001"  # Web Console UI (built-in)
+      - "9000:9000"
+      - "9001:9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
-      MINIO_REGION_NAME: ${MINIO_REGION:-us-east-1}
-      MINIO_BROWSER: ${MINIO_BROWSER:-on}
-      MINIO_DOMAIN: ${MINIO_DOMAIN:-localhost}
-      MINIO_BROWSER_REDIRECT_URL: ${MINIO_BROWSER_REDIRECT_URL:-http://localhost:9001}
+      # Pass variables from .env.minio into the container
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_REGION_NAME=${MINIO_REGION}
+      - MINIO_BROWSER=${MINIO_BROWSER}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_BROWSER_REDIRECT_URL=${MINIO_BROWSER_REDIRECT_URL}
     volumes:
       - ./minio/data:/data
       - ./minio/init:/docker-entrypoint-initdb.d:ro
@@ -38,8 +38,9 @@ services:
       minio-server:
         condition: service_healthy
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      # Pass credentials into container environment
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     entrypoint: >
       /bin/sh -c "
       echo 'Waiting for MinIO server...';
