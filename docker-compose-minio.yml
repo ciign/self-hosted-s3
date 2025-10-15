@@ -9,7 +9,6 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      # Pass variables from .env.minio into the container
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - MINIO_REGION_NAME=${MINIO_REGION}
@@ -38,7 +37,6 @@ services:
       minio-server:
         condition: service_healthy
     environment:
-      # Pass credentials into container environment
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     entrypoint: >
