@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # MinIO S3-compatible Object Storage Server
   # The console UI is built into this image - accessible on port 9001
@@ -47,7 +45,8 @@ services:
       /bin/sh -c "
       echo 'Waiting for MinIO server...';
       sleep 5;
-      mc alias set local http://minio-server:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD;
+      echo 'Configuring MinIO client with credentials from .env.minio...';
+      mc alias set local http://minio-server:9000 \"\$MINIO_ROOT_USER\" \"\$MINIO_ROOT_PASSWORD\";
       echo 'MinIO client configured successfully';
       
       echo 'Creating default buckets...';
