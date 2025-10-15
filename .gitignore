@@ -1,0 +1,35 @@
+# Environment files
+.env.minio
+.env
+
+# MinIO data directory (keep structure, ignore data)
+minio/data/*
+!minio/data/.gitkeep
+
+# Backup files
+backups/*
+!backups/.gitkeep
+*.sql
+*.tar.gz
+*.backup
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Temporary files
+tmp/
+temp/
+*.tmp
